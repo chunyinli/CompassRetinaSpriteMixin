@@ -1,0 +1,46 @@
+// Retina Sprite Mixin and Usage
+
+// Create sprite icon and retina version of it that's twice as large, using the same file name
+// Keep these icon images in separate folders.
+// Generate the sprite maps using the 'sprite-map' Compass function, passing in the paths to the folders that holds the icons
+
+
+// $icons: sprite-map("sprite/icons/*.png",
+    // $icons-<image_name>-spacing : <value>
+    // $icons-<image_name>-position : <value>
+    // $icons-<image_name>-repeat : <value>
+// );
+
+// $icons-retina: sprite-map("sprite/icons-retina/*.png",
+    // $icons-retina-<image_name>-spacing : <value>
+    // $icons-retina-<image_name>-position : <value>
+    // $icons-retina-<image_name>-repeat : <value>
+// );
+
+
+
+// $sprite : file name of the icon
+// $x : x offset value
+// $y : y offset value
+
+@mixin retina-sprite($sprite, $x: 0, $y: 0) {
+
+    background: sprite($icons, $sprite, $x, $y) no-repeat;
+
+    @media (-webkit-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 3/2), (min-device-pixel-ratio: 2) {
+        background-image: sprite-url($icons-retina);
+        background-size: (image-width(sprite-path($icons-retina)) / 2) (image-height(sprite-path($icons-retina)) / 2);
+
+        $x2Value: 0;
+
+        @if $x == 100% {
+            $x2Value: $x;
+        } @else {
+            $x2Value: (round(nth(sprite-position($icons-retina, $sprite), 1) / 2) + $x);
+        }
+
+        background-position: $x2Value (round(nth(sprite-position($icons-retina, $sprite), 2) / 2) + $y);
+
+    }
+}
+
